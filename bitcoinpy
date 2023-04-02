@@ -1,0 +1,24 @@
+import requests
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Define the API endpoint and parameters
+url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
+start_date = '2022-01-01'
+end_date = '2022-12-31'
+
+# Send a GET request to retrieve the data
+response = requests.get(f'{url}?start={start_date}&end={end_date}')
+
+# Convert the JSON response to a Pandas dataframe
+data = pd.DataFrame.from_dict(response.json()['bpi'], orient='index', columns=['price'])
+
+# Convert the index to a DatetimeIndex
+data.index = pd.to_datetime(data.index)
+
+# Plot the Bitcoin prices using Matplotlib
+plt.plot(data)
+plt.title('Bitcoin Prices in 2022')
+plt.xlabel('Date')
+plt.ylabel('Price (USD)')
+plt.show()
